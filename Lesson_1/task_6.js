@@ -19,7 +19,7 @@
 
 
  function userIsAllowed(user_data) {
-    return (user_data['isAdmin'] && (user_data['age'] >= 18 && user_data['age'] <= 35)) ? true :
-      ((user_data['age'] >= 18 && user_data['age'] <= 35) && (user_data['paid']) && (!user_data['blocked']) && (!user_data['badUsername'])) ? true : false
+    return (user_data['isAdmin'] && user_data['age'] >= 18 && user_data['age'] <= 35) ? true :
+      (user_data['age'] >= 18 && user_data['age'] <= 35 && user_data['paid'] && !user_data['blocked'] && !user_data['badUsername']) ? true : false
   }
   
