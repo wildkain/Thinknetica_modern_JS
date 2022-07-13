@@ -6,21 +6,25 @@
 
 
 const human = Object.create({}, {
-    fullName: {
-        get() {
-            return `${this.firstName} ${this.lastName}`
+        fullName: {
+            get() {
+                return `${this.firstName} ${this.lastName}`
+            },
+            set(value) {
+                [this.firstName, this.lastName] = value.split(' ')
+            }
         },
-        set(value) {
-            [this.firstName, this.lastName] = value.split(' ')
-        }
-    },
-    dateOfBirth: {
-        set(value) {
-            this.age = (new Date()).getFullYear() - new Date(value).getFullYear();
-        }
-
-    },
-});
+        dateOfBirth: {
+            get() {
+                return this._dateOfBirth_
+            },
+            set(value) {
+                this._dateOfBirth_ = value
+                this.age = (new Date()).getFullYear() - new Date(value).getFullYear();
+            }
+        },
+    }
+);
 
 human.fullName = 'Reserv Petrovich'
 human.dateOfBirth = '01.01.2000'
