@@ -8,10 +8,15 @@
 const human = Object.create({}, {
         fullName: {
             get() {
-                return `${this.firstName} ${this.lastName}`
+                return `${this.firstName} ${this.lastName || ''}`
             },
             set(value) {
-                [this.firstName, this.lastName] = value.split(' ')
+                if (value.split(' ').length < 2) {
+                    this.firstName = value
+                    this.lastName = ''
+                } else {
+                    [this.firstName, this.lastName] = value.split(' ')
+                }
             }
         },
         dateOfBirth: {
@@ -26,7 +31,7 @@ const human = Object.create({}, {
     }
 );
 
-human.fullName = 'Reserv Petrovich'
+human.fullName = 'Reserv'
 human.dateOfBirth = '01.01.2000'
 
 console.log(human)
