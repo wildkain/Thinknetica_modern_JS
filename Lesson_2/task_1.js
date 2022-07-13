@@ -8,7 +8,8 @@ function  analyzeText(text) {
     }
 
     return text
-        .replace(/[^a-zA-Za-åa-ö-w-я\s]/g, '')
+        .replace(/[^a-zA-Za-åa-ö-w-я\s]/g, ' ')
+        .replace(/[\r\n]/g, ' ')
         .split(' ')
         .filter((word) => word.length > 0)
         .map((word) => (
@@ -17,4 +18,4 @@ function  analyzeText(text) {
         );
 }
 
-console.log(analyzeText('привет Мир Hello world! , . , 1, '))
+console.log(analyzeText('не\r\nвероятно !'))
