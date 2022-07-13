@@ -8,7 +8,7 @@ let myObject = {};
 myObject['name'] = 'Alex'
 myObject['lastName'] = 'Smith'
 myObject['name'] = 'Bob'
-delete (myObject['name']);
-delete (myObject['lastName']);
+delete myObject['name'];
+delete myObject['lastName'];
 
 console.log(myObject)
