@@ -8,15 +8,10 @@
 const human = Object.create({}, {
         fullName: {
             get() {
-                return `${this.firstName} ${this.lastName || ''}`
+                return [this.firstName, this.lastName].filter(Boolean).join(' ')
             },
             set(value) {
-                if (value.split(' ').length < 2) {
-                    this.firstName = value
-                    this.lastName = ''
-                } else {
-                    [this.firstName, this.lastName] = value.split(' ')
-                }
+                [this.firstName, this.lastName] = value.trim().split(' ').filter(Boolean)
             }
         },
         dateOfBirth: {
