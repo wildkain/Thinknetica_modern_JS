@@ -30,8 +30,7 @@ const employees = [
 
 let averageSalary = function (employees) {
     return employees
-        .map((employee) => employee.salary)
-        .reduce((total, emploee_salary) => total + emploee_salary) / employees.length
+        .reduce((total, employee) => total + employee.salary, 0) / employees.length
 }
 
 
