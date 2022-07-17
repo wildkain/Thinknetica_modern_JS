@@ -22,7 +22,11 @@ const cache = () => {
     }
 
     return function (value, degree) {
-        if (value in cache && degree == cache[value]?.results?.find(r => r.degree == degree)?.degree) {
+        let isDegreeMatch = () => {
+           return  degree == cache[value]?.results?.find(r => r.degree == degree)?.degree
+        }
+
+        if (value in cache && isDegreeMatch()) {
             let result = cache[value]?.['results']?.find(r => r.degree == degree).result
             return { value: result, fromCache: true}
         } else {
