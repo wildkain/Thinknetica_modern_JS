@@ -15,13 +15,19 @@
 const cache = () => {
     let cache = {};
 
-    return function (value, degree) {
+    let updateCache = function (value, degree, result) {
+        let results = cache[value]?.results || []
+        results.push({degree, result})
+        cache[value] = { results }
+    }
 
-        if (value in cache && degree == cache[value]['degree']) {
-            return {value: cache[value]['result'], fromCache: true}
+    return function (value, degree) {
+        if (value in cache && degree == cache[value]?.results?.find(r => r.degree == degree)?.degree) {
+            let result = cache[value]?.['results']?.find(r => r.degree == degree).result
+            return { value: result, fromCache: true}
         } else {
             let result = value ** degree
-            cache[value] = {degree: degree, result: result};
+            updateCache(value, degree, result)
             return {value: result, fromCache: false};
         }
     }
@@ -29,6 +35,7 @@ const cache = () => {
 
 const calculate = cache();
 
-console.log(calculate(3, 3));
-console.log(calculate(2, 10));
-console.log(calculate(2, 10));
+console.log(calculate(3, 3)); // {value: 27, fromCache: false}
+console.log(calculate(3, 3)); // {value: 27, fromCache: true}
+console.log(calculate(3, 2)); // {value: 9, fromCache: false}
+console.log(calculate(3, 3)); // {value: 27, fromCache: true}
