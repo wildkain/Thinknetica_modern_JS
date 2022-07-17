@@ -36,7 +36,7 @@ const Calc = function () {
     }
 
     const addToHistory = (operation, operands) => {
-        history.push({operation: operation, operands: operands})
+        history.push({ operation, operands})
     }
 
     const clearHistory = () => {
@@ -44,14 +44,11 @@ const Calc = function () {
     }
 
     const runOperation = (operation_string) => {
-        full_operations = operation_string.split(' ');
-        operand_1 = full_operations[0];
-        operation = full_operations[1];
-        operand_2 = full_operations[2];
-
+        full_operations = operation_string.split(' ').map(o => parseInt(o) ? parseInt(o) : o );
+        [operand_1, operation, operand_2] = full_operations;
         addToHistory(operation, [operand_1, operand_2]);
 
-        return console.log(operations[operation](Number(operand_1), Number(operand_2)));
+        return operations[operation](operand_1, operand_2);
     }
 
     return {
