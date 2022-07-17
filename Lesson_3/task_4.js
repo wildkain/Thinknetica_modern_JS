@@ -16,22 +16,42 @@ const kupiBilet = function () {
     let sold_tickets = [];
 
     const generateId = function () {
-        return (Math.random() + 1).toString(36).substring(6)
+        let generatedID = function () {
+           return  Array.from(Array(6), () => Math.floor(Math.random() * 36).toString(36)).join('');
+        }
+        if (generatedID() in sold_tickets.map(t => t.id)) {
+            return  generateId();
+        } else {
+            return generatedID();
+        }
     }
 
     const buyTicket = (event_name) => {
+       let event = events.find(e => e['event_name'] === event_name)
+       let ticket = function() {
+           if (event) {
+               cashier += event.ticket_price
+              let ticketObj = { id: generateId(), event_name: event.event_name, cost: event.ticket_price}
+               sold_tickets.push(ticketObj)
+               return ticketObj
+           } else {
+               return console.log('Event not found')
+           }
+       }
 
-        let event = events.find(e => e['event_name'] === event_name)
-        cashier += event.ticket_price
-        let ticket = {id: generateId(), event_name: event.event_name, cost: event.ticket_price}
-        sold_tickets.push(ticket)
-        return ticket
+        return ticket();
     }
 
     const returnTicket = (ticket_id) => {
         let ticket = sold_tickets.find(s_ticket => s_ticket.id === ticket_id)
-        cashier -= ticket.cost
-        sold_tickets = sold_tickets - [ticket]
+
+        if (ticket) {
+            cashier -= ticket.cost
+            sold_tickets = sold_tickets.filter(t => ![ticket].includes(t))
+            return  ticket
+        } else {
+            console.log(`Ticket with id ${ticket_id} not found`)
+        }
     }
 
     const createEvent = (event_name, ticket_price) => {
@@ -55,7 +75,7 @@ const ticketWindow = new kupiBilet()
 console.log(ticketWindow.createEvent('Concert', 500))
 let ticket = ticketWindow.buyTicket('Concert')
 console.log(ticketWindow.getCashier())
-ticketWindow.returnTicket(ticket.id)
+console.log(ticketWindow.returnTicket(ticket.id))
 console.log(ticketWindow.getCashier())
 
 
