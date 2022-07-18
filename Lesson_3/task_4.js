@@ -20,9 +20,17 @@ const kupiBilet = function () {
             return Array.from(Array(6), () => Math.floor(Math.random() * 36).toString(36)).join('');
         }
 
-        let id = generatedID();
+        // recursive case
+        // let id = generatedID();
+        //
+        // return Boolean(sold_tickets[id]) ? generateId() : id;
 
-        return Boolean(sold_tickets[id]) ? generateId() : id;
+        // do/while case
+        let id;
+        do {
+            id = generatedID()
+        } while (Boolean(sold_tickets[id]))
+        return id;
     }
 
     const buyTicket = (event_name) => {
