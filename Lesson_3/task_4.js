@@ -11,51 +11,51 @@
 
 
 const kupiBilet = function () {
-    let events = [];
+    let events = {};
     let cashier = 0;
-    let sold_tickets = [];
+    let sold_tickets = {};
 
     const generateId = function () {
         let generatedID = function () {
-           return  Array.from(Array(6), () => Math.floor(Math.random() * 36).toString(36)).join('');
+            return Array.from(Array(6), () => Math.floor(Math.random() * 36).toString(36)).join('');
         }
-        if (generatedID() in sold_tickets.map(t => t.id)) {
-            return  generateId();
-        } else {
-            return generatedID();
-        }
+
+        let id = generatedID();
+
+        return Boolean(sold_tickets[id]) ? generateId() : id;
     }
 
     const buyTicket = (event_name) => {
-       let event = events.find(e => e['event_name'] === event_name)
-       let ticket = function() {
-           if (event) {
-               cashier += event.ticket_price
-              let ticketObj = { id: generateId(), event_name: event.event_name, cost: event.ticket_price}
-               sold_tickets.push(ticketObj)
-               return ticketObj
-           } else {
-               return console.log('Event not found')
-           }
-       }
+        let event = events[event_name]
+        let ticket = function () {
+            if (event) {
+                cashier += event.ticket_price
+                let ticketObj = {id: generateId(), event_name: event.name, cost: event.ticket_price}
+
+                sold_tickets[ticketObj.id] = ticketObj
+                return ticketObj
+            } else {
+                return console.log('Event not found')
+            }
+        }
 
         return ticket();
     }
 
     const returnTicket = (ticket_id) => {
-        let ticket = sold_tickets.find(s_ticket => s_ticket.id === ticket_id)
+        let ticket = sold_tickets[ticket_id]
 
         if (ticket) {
             cashier -= ticket.cost
-            sold_tickets = sold_tickets.filter(t => ![ticket].includes(t))
-            return  ticket
+            delete sold_tickets[ticket_id]
+            return ticket
         } else {
             console.log(`Ticket with id ${ticket_id} not found`)
         }
     }
 
     const createEvent = (event_name, ticket_price) => {
-        events.push({event_name: event_name, ticket_price: ticket_price})
+        events[event_name] = {name: event_name, ticket_price: ticket_price}
         return events;
     };
 
@@ -63,20 +63,33 @@ const kupiBilet = function () {
         return cashier
     }
 
+    const soldTicketList = () => {
+        return sold_tickets
+    }
+
+    const isValidTicket = (ticket_id) => {
+        return sold_tickets[ticket_id] ? true : false
+    }
+
     return {
         createEvent: createEvent,
         buyTicket: buyTicket,
         getCashier: getCashier,
         returnTicket: returnTicket,
+        sold_tickets: soldTicketList,
+        isValidTicket: isValidTicket,
     }
 }
 
 const ticketWindow = new kupiBilet()
 console.log(ticketWindow.createEvent('Concert', 500))
 let ticket = ticketWindow.buyTicket('Concert')
+let ticket2 = ticketWindow.buyTicket('Concert')
 console.log(ticketWindow.getCashier())
 console.log(ticketWindow.returnTicket(ticket.id))
-console.log(ticketWindow.getCashier())
+console.log(`ticket ${ticket.id} is valid?: ` + ticketWindow.isValidTicket(ticket.id))
+console.log(`ticket ${ticket2.id} is valid?: ` + ticketWindow.isValidTicket(ticket2.id))
+console.log(ticketWindow.getCashier());
 
 
 
