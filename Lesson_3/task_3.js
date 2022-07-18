@@ -44,7 +44,7 @@ const Calc = function () {
     }
 
     const runOperation = (operation_string) => {
-        full_operations = operation_string.split(' ').map(o => parseInt(o) ? parseInt(o) : o );
+        full_operations = operation_string.split(' ').map(o => o == 0 ? 0 :  (parseInt(o) || o ));
         [operand_1, operation, operand_2] = full_operations;
         addToHistory(operation, [operand_1, operand_2]);
 
@@ -61,7 +61,7 @@ const Calc = function () {
 
 const calculator = new Calc()
 calculator.history;
-calculator.operation('1 + 2') //
+console.log(calculator.operation('0 + 2'))
 calculator.addOperation('/', (a, b) => a / b)
 calculator.operation('10 / 2') // 5
 console.log(calculator.history());
