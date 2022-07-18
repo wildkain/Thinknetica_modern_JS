@@ -14,20 +14,16 @@
 
 const cache = () => {
     let cache = {};
+    // Cтруктура {3: { 2: result }}
 
     let updateCache = function (value, degree, result) {
-        let results = cache[value]?.results || []
-        results.push({degree, result})
-        cache[value] = { results }
+        cache[value] = cache[value] || {}
+        cache[value][degree] = result
     }
 
     return function (value, degree) {
-        let isDegreeMatch = () => {
-           return  degree == cache[value]?.results?.find(r => r.degree == degree)?.degree
-        }
-
-        if (value in cache && isDegreeMatch()) {
-            let result = cache[value]?.['results']?.find(r => r.degree == degree).result
+        if (value in cache && degree in cache[value]) {
+            let result = cache[value][degree]
             return { value: result, fromCache: true}
         } else {
             let result = value ** degree
