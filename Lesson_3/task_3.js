@@ -44,7 +44,7 @@ const Calc = function () {
     }
 
     const runOperation = (operation_string) => {
-        full_operations = operation_string.split(' ').map(o => o == 0 ? 0 :  (parseInt(o) || o ));
+        full_operations = operation_string.split(' ').map(o => isNaN(o) ? o : parseFloat(o));
         [operand_1, operation, operand_2] = full_operations;
         addToHistory(operation, [operand_1, operand_2]);
 
