@@ -20,8 +20,8 @@ const Rectangle = function (side_a, side_b) {
     }
 }
 
-const Square = function (side_a, side_b) {
-    this.__proto__ = new Rectangle(side_a, side_b)
+const Square = function (side) {
+    Object.setPrototypeOf(this, new Rectangle(side, side))
 }
 
 let rect = new Rectangle(5, 2)
@@ -29,7 +29,7 @@ console.log(rect.getArea()); // 10
 console.log(rect.getPerimeter()); // 8
 console.log(rect)
 console.log('--------')
-let square = new Square(10, 10);
+let square = new Square(10);
 console.log(square)
 console.log(square.getArea()); // 100
 console.log(square.getPerimeter()); // 40
