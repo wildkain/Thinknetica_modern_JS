@@ -20,36 +20,37 @@
 //
 // Верфи и корабли должны создаваться с помощью функций-конструкторов.
 
-const Ship = function (attrs) {
-    this.type = attrs.type
-}
-
 const SailingShip = function (attrs) {
-    Object.setPrototypeOf(this, new Ship(attrs))
     this.number_of_masts = attrs.number_of_masts
     this.sailing_area = attrs.sailing_area
 }
 
-
 const EngineShip = function (attrs) {
-    Object.setPrototypeOf(this, new Ship(attrs))
     this.engine_power = attrs.engine_power
     this.material = attrs.material
 }
 
 
 const commonShipyard = function () {
-    this.buildShip = function () {
-        return new Ship(this.ship_attrs)
-    }
     this.repairShip = function (ship) {
-        ship.type === this.ship_attrs.type ? console.log("Repairing ship...") : console.log('Error: [Wrong ship type]')
+        if (Object.getPrototypeOf(ship) == Object.getPrototypeOf(this.buildShip(ship))) {
+            console.log("Repairing ship...")
+        } else {
+            console.log('Error: [Wrong ship type]')
+        }
     }
     this.repaintShip = function (ship) {
         console.log(`Repaint... ${ship.type}`)
     }
     this.changeShip = function (ship) {
-        return ship.type === this.ship_attrs.type ? this.buildShip(ship) : console.log('Error: [Wrong ship type]')
+        let result;
+        if (Object.getPrototypeOf(ship) == Object.getPrototypeOf(this.buildShip(ship))) {
+            result = this.buildShip(ship)
+        } else {
+            result = console.log('Error: [Wrong ship type]')
+        }
+
+        return result
     }
 }
 
@@ -83,7 +84,9 @@ let engine_shipyard = new EngineShipyard();
 
 let sailing_ship = sailing_shipyard.buildShip({number_of_masts: 5, sailing_area: 100})
 let engine_ship = engine_shipyard.buildShip({engine_power: 10000, material: 'steel'})
+console.debug(sailing_ship)
 console.log(sailing_shipyard.repaintShip(sailing_ship))
 
 console.log(engine_shipyard.repairShip(engine_ship))
+console.log(engine_shipyard.repairShip(sailing_ship))
 console.log(sailing_shipyard.changeShip(sailing_ship))
