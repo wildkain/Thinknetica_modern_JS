@@ -33,7 +33,7 @@ const EngineShip = function (attrs) {
 
 const commonShipyard = function () {
     this.repairShip = function (ship) {
-        if (Object.getPrototypeOf(ship) == Object.getPrototypeOf(this.buildShip(ship))) {
+        if (ship instanceof this.shipType()) {
             console.log("Repairing ship...")
         } else {
             console.log('Error: [Wrong ship type]')
@@ -44,7 +44,7 @@ const commonShipyard = function () {
     }
     this.changeShip = function (ship) {
         let result;
-        if (Object.getPrototypeOf(ship) == Object.getPrototypeOf(this.buildShip(ship))) {
+        if (ship instanceof this.shipType()) {
             result = this.buildShip(ship)
         } else {
             result = console.log('Error: [Wrong ship type]')
@@ -56,6 +56,11 @@ const commonShipyard = function () {
 
 const SailingShipyard = function () {
     Object.setPrototypeOf(this, new commonShipyard())
+    Object.assign(this, {
+        shipType: () => {
+            return SailingShip
+        }
+    })
 
     this.buildShip = function (specific_ship_attrs) {
         this.ship_attrs['number_of_masts'] = specific_ship_attrs.number_of_masts
@@ -68,6 +73,11 @@ const SailingShipyard = function () {
 
 const EngineShipyard = function () {
     Object.setPrototypeOf(this, new commonShipyard())
+    Object.assign(this, {
+        shipType: () => {
+            return EngineShip
+        }
+    })
 
     this.buildShip = function (specific_ship_attrs) {
         this.ship_attrs['engine_power'] = specific_ship_attrs.engine_power
@@ -75,7 +85,7 @@ const EngineShipyard = function () {
         return new EngineShip(this.ship_attrs)
     }
 
-    this.ship_attrs = {type: 'EngineShip'}
+    this.ship_attrs = {type: EngineShip}
 }
 
 
