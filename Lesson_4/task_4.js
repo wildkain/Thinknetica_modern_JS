@@ -74,18 +74,11 @@ const SailingShipyard = function () {
 const EngineShipyard = function () {
     Object.setPrototypeOf(this, new commonShipyard())
     Object.assign(this, {
-        shipType: () => {
-            return EngineShip
+        shipType: EngineShip,
+        buildShip: function ({engine_power, material} = {}) {
+            return new this.shipType({engine_power, material})
         }
     })
-
-    this.buildShip = function (specific_ship_attrs) {
-        this.ship_attrs['engine_power'] = specific_ship_attrs.engine_power
-        this.ship_attrs['material'] = specific_ship_attrs.material
-        return new EngineShip(this.ship_attrs)
-    }
-
-    this.ship_attrs = {type: EngineShip}
 }
 
 
