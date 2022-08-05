@@ -32,7 +32,9 @@ HTML должен измениться на
 
 Реализовать функцию для отображения на экране вложенных массивов.
 
-Элементом массива может являться либо строка, либо массив, в случае строки нужно показать этот элемент на как элемент списка, в случае массива - создать новый вложенный список, например:
+Элементом массива может являться либо строка, либо массив,
+ в случае строки нужно показать этот элемент на как элемент списка,
+ в случае массива - создать новый вложенный список, например:
 Для данных
 const nestedList = ["Item", ["Item2", ["Item3"]]];
 Должна получиться такая структура html на выходе:
@@ -48,16 +50,22 @@ const nestedList = ["Item", ["Item2", ["Item3"]]];
 </ul>
  */
 
+
+
 function parseTemplate(element, data) {
-    element.children.forEach((child) => {
+    Array.from(element.children).forEach((child) => {
         let key = child.dataset['field']
-        let value = data[key]
-        if (value) {
-            child.textContent = value
+        if (child.hasAttribute('data-field')) {
+            child.textContent = data[key]
         } else {
             throw `Не найдено свойство ${key}!`
         }
     })
 }
+
+parseTemplate(
+    document.getElementById('item1'),
+{ title: 'Hello world', description: 'The first program' }
+);
 
 
