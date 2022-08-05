@@ -23,7 +23,7 @@ function createNestedList(items) {
         let ul = document.createElement('ul')
 
         items.forEach((item) => {
-            if (item.constructor === String) {
+            if (typeof item  === 'string') {
                 let li = document.createElement('li')
                 li.textContent = item
                 ul.append(li)
