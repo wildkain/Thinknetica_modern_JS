@@ -1,5 +1,9 @@
+document.ondragstart = noselect;
+document.onselectstart = noselect;
+document.oncontextmenu = noselect;
+function noselect() {return false;}
+
 const display = document.querySelector('.display')
-const buttons = document.querySelectorAll('button')
 const buttonsBlock = document.querySelector('.button-block')
 
 
@@ -44,7 +48,7 @@ const performInputOperation = keyValue => {
             previousOperand = null;
             currentOperand = null;
             currentOperation = null;
-            display.value = "0"
+            clearDisplay();
             break;
         case "=":
             performOperation(currentOperation);
@@ -63,14 +67,33 @@ const performInputOperation = keyValue => {
     }
 }
 
+const clearDisplay = (char_count) => {
+    if (char_count && Number.isInteger(char_count)) {
+        display.value = display.value.slice(0, -Math.abs(char_count))
+        currentOperand = display.value;
+    } else {
+        display.value = "0"
+    }
+}
+
 buttonsBlock.addEventListener('click', (event) => {
         const keyValue = event.target.innerHTML;
         performInputOperation(keyValue)
     }
 )
 
+window.onkeydown = (event) => {
+    if (event.key == 'Backspace') {
+        event.preventDefault();
+        clearDisplay(1);
+    } else if (event.key == "Enter") {
+        event.preventDefault();
+        performInputOperation("=")
+    }
+}
 
 document.addEventListener('keypress', event => {
     const keyValue = event.key;
+    console.debug(keyValue)
     performInputOperation(keyValue);
 })
