@@ -21,6 +21,11 @@ const performOperation = (operation) => {
             result = Number(previousOperand) - Number(currentOperand)
             break;
         case "/":
+            if (currentOperand == 0) {
+                alert('ZeroDivision is prohibited')
+                result = 0
+                break;
+            }
             result = Number(previousOperand) / Number(currentOperand)
             break;
         case "*":
